@@ -2,12 +2,17 @@ include LICENSE.txt
 exclude .gitignore
 exclude .coverage
 exclude .travis.yml
-include README.rst
+include *.rst
 include setup.cfg
 prune .cache
 prune .git
 prune build
+prune checkpoints
 prune dist
+prune tests/__pycache__
 
 recursive-exclude *.egg-info *
 recursive-include tests *
+recursive-exclude tests *~
+recursive-exclude tests *.pyc
+recursive-include examples *.cli

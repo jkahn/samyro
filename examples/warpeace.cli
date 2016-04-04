@@ -1,0 +1,10 @@
+--name=warpeace
+--checkpoint_pattern=checkpoints/warpeace/checkpoint
+--epochs=10
+--batches_per_epoch=300
+--print_every=50
+--embedding_size=16
+--lstm_dims=128,256
+--sample_length=128
+--sample_temperature=0.5
+/opt/data/texts/warpeace_input.txt

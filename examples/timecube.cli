@@ -1,0 +1,13 @@
+--name=timecube
+--checkpoint_pattern=checkpoints/timecube/checkpoint
+--epochs=20
+--batch_size=8
+--batches_per_epoch=60
+--eval_per_epoch=50
+--shuffle_eval=True
+--print_every=50
+--embedding_size=16
+--lstm_dims=64,128
+--sample_length=128
+--sample_temperature=0.5
+/opt/data/texts/timecube.txt

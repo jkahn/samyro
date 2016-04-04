@@ -1,6 +1,6 @@
 """Simple tests for loading samyro code."""
-from samyro import main
+import samyro.cli.shared
 
 
-def test_main():
-    main()
+def test_shared():
+    samyro.cli.shared.set_shared_args()

@@ -135,7 +135,9 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'samyro=samyro:main',
+            'samyro=samyro.cli.shared:main',
+            'samyro-learn=samyro.cli.learn:main',
+            'samyro-write=samyro.cli.write:main',
         ],
     },
     cmdclass={'test': RunTests},
