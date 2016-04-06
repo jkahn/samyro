@@ -113,7 +113,7 @@ setup(
     # for example:
     # $ pip install -e .[dev,test]
     extras_require={
-        'dev': ['check-manifest', 'flake8', 'jupyter'],
+        'dev': ['check-manifest', 'flake8', 'jupyter', 'twine'],
         'test': ['coverage', 'check-manifest', 'flake8', 'docutils', 'pytest'],
     },
 
