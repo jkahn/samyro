@@ -38,6 +38,7 @@ def execute(args):
 
             print(samyro.write.write(*(model.inference_io(reuse=True)),
                                      max_length=args.sample_length,
+                                     seed=samyro.integerize.random_seed_char(),
                                      temperature=args.sample_temperature))
 
 

@@ -6,12 +6,13 @@ from __future__ import print_function
 
 import numpy
 import prettytensor as pt
+import six
 
 from samyro import integerize
 
 
 def write(input_placeholder, output_activations,
-          seed=None, max_length=1024, temperature=1.0):
+          seed, max_length=1024, temperature=1.0):
     """Samples from the model
 
     Sampling is done by first running either the seed or an arbitrary character
@@ -22,7 +23,7 @@ def write(input_placeholder, output_activations,
       input_placeholder: tensorflow input placeholder, provided by model
       output_activations: tensorflow output activations tensor, provided by
         model
-      seed: Either a string of characters to prime the network or None.
+      seed: A non-empty string of characters to prime the network.
       max_length: The maximum length to draw in case EOS is not reached.
       temperature: A positive value used to renormalize the inputs.  A higher
         value selects less likely choices. 1.0 leaves the distribution alone.
@@ -30,8 +31,7 @@ def write(input_placeholder, output_activations,
       A string that was sampled from the model.
     """
     assert temperature > 0, 'Temperature must be greater than 0.'
-    seed = (seed or integerize.random_seed_char())
-
+    assert isinstance(seed, six.string_types) and len(seed)
     # The recurrent runner takes care of tracking the model's state at
     # each step and provides a reset call to zero it out for each query.
     recurrent_runner = pt.train.RecurrentRunner()

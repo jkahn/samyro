@@ -3,6 +3,7 @@ import tensorflow as tf
 
 from samyro.cli import positive_int, positive_float
 import samyro.cli.shared
+import samyro.integerize
 
 
 def execute(args):
@@ -13,12 +14,17 @@ def execute(args):
         runner = samyro.cli.shared.get_runner(args)
         runner.load_from_checkpoint(sess)
         print(samyro.write.write(inference_i, inference_o,
+                                 seed=args.seed,
                                  max_length=args.max_length,
                                  temperature=args.temperature))
 
 
 def set_writer_args(writer_parser):
     """The write subcommand uses the shared arguments but also these."""
+
+    writer_parser.add_argument('--seed', type=str,
+                               default=samyro.integerize.random_seed_char(),
+                               help="seed string to bootstrap hidden state")
 
     writer_parser.add_argument('--max_length', type=positive_int, default=1024,
                                help="max length in characters")
