@@ -69,4 +69,5 @@ def write(input_placeholder, output_activations,
         distribution -= .00000001
         ci = numpy.argmax(numpy.random.multinomial(1, distribution))
     result += integerize.convert_to_symbol(ci)  # Add the last letter.
-    return result
+    return result.replace(
+        integerize.BOS_CHAR, '').replace(integerize.EOS_CHAR, '')

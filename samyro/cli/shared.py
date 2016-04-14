@@ -9,6 +9,9 @@ import samyro.write
 
 import samyro.cli.learn
 import samyro.cli.write
+import samyro.cli.sample
+
+from samyro.cli import positive_int
 
 
 def get_model(args):
@@ -61,6 +64,42 @@ def set_shared_args():
     return shared_parent
 
 
+def set_sampler_shared_args(parser, default_batch_size=8):
+    reader_group = parser.add_argument_group(
+        'sampler read configuration')
+
+    reader_group.add_argument(
+        '--batch_size', type=positive_int, default=default_batch_size,
+        help="how many segments should be read per backprop batch")
+
+    reader_group.add_argument(
+        '--steps_per_sample',
+        type=positive_int, default=100,
+        help="how many timesteps per sample")
+
+    reader_group.add_argument(
+        '--sampler',
+        choices=['patches', 'lines', 'paragraphs'],
+        default='patches',
+        help="select the class of sampler to use on the file")
+
+
+def get_sampler(args):
+    if args.sampler == 'patches':
+        sampler_class = samyro.read.CharacterPatchSampler
+    elif args.sampler == 'lines':
+        sampler_class = samyro.read.LineSampler
+    elif args.sampler == 'paragraphs':
+        sampler_class = samyro.read.ParagraphSampler
+    else:
+        assert False, "unrecognized --sampler %s" % args.sampler
+
+    return sampler_class(
+        filename=args.file.name,
+        sample_length=args.steps_per_sample,
+        batch_size=args.batch_size)
+
+
 def main():
     """Entry point for main samyro script with subcommands."""
 
@@ -80,6 +119,10 @@ def main():
     writer_parser = subparsers.add_parser("write", help="generate new text",
                                           parents=[shared_parent])
     samyro.cli.write.set_writer_args(writer_parser)
+
+    sample_parser = subparsers.add_parser("sample",
+                                          help="debug sampling from files")
+    samyro.cli.sample.set_sampler_args(sample_parser)
 
     # Actual work done by the execute function declared inside each subcommand
 

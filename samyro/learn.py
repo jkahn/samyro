@@ -8,14 +8,14 @@ from samyro import read, model
 
 class Trainer(object):
     """A training regime."""
-    def __init__(self, model_instance, reader, reuse):
+    def __init__(self, model_instance, sampler, batch_size, reuse):
 
         assert isinstance(model_instance, model.Model)
-        assert isinstance(reader, read.Reader)
+        assert isinstance(sampler, read.Sampler)
 
-        input_placeholder = reader.placeholder()
-        output_placeholder = reader.placeholder()
-        labels = reader.as_labels(output_placeholder)
+        input_placeholder = sampler.placeholder()
+        output_placeholder = sampler.placeholder()
+        labels = sampler.as_labels(output_placeholder)
 
         self.feed_vars = (input_placeholder, output_placeholder)
         self.train_op, self.train_loss = model_instance.train_op_loss(

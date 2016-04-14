@@ -13,17 +13,18 @@ def execute(args):
     with tf.Session() as sess:
         runner = samyro.cli.shared.get_runner(args)
         runner.load_from_checkpoint(sess)
-        print(samyro.write.write(inference_i, inference_o,
-                                 seed=args.seed,
-                                 max_length=args.max_length,
-                                 temperature=args.temperature))
+        text = samyro.write.write(inference_i, inference_o,
+                                  seed=args.seed,
+                                  max_length=args.max_length,
+                                  temperature=args.temperature)
+        print(text)
 
 
 def set_writer_args(writer_parser):
     """The write subcommand uses the shared arguments but also these."""
 
     writer_parser.add_argument('--seed', type=str,
-                               default=samyro.integerize.random_seed_char(),
+                               default=samyro.integerize.BOS_CHAR,
                                help="seed string to bootstrap hidden state")
 
     writer_parser.add_argument('--max_length', type=positive_int, default=1024,

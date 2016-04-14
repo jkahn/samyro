@@ -1,0 +1,6 @@
+--name=kjv
+--checkpoint_pattern=checkpoints/kjv/checkpoint
+--embedding_size=16
+--lstm_dims=64,128
+--temperature=0.5
+--max_length=100

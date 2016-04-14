@@ -137,6 +137,7 @@ setup(
         'console_scripts': [
             'samyro=samyro.cli.shared:main',
             'samyro-learn=samyro.cli.learn:main',
+            'samyro-sample=samyro.cli.sample:main',
             'samyro-write=samyro.cli.write:main',
         ],
     },
