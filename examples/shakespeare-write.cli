@@ -1,0 +1,6 @@
+--name=shakespeare
+--checkpoint_pattern=checkpoints/shakespeare/checkpoint
+--embedding_size=16
+--lstm_dims=128,256
+--temperature=0.5
+--max_length=140
