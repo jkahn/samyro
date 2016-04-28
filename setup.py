@@ -111,8 +111,9 @@ setup(
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
     # for example:
-    # $ pip install -e .[dev,test]
+    # $ pip install -e .[dev,test,doc]
     extras_require={
+        'doc': ['restview'],
         'dev': ['check-manifest', 'flake8', 'jupyter', 'twine'],
         'test': ['coverage', 'check-manifest', 'flake8', 'docutils', 'pytest'],
     },
