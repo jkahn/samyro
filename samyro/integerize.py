@@ -9,12 +9,12 @@ import random
 import tensorflow as tf
 
 UNK = 0
-BOS = 127
-EOS = 1
+BOS = 2  # officially STX "START TEXT"
+EOS = 3  # officially ETX "END TEXT"
 
 UNK_CHAR = u'\ufeff'
-BOS_CHAR = "\x7f"
-EOS_CHAR = "\x01"
+BOS_CHAR = chr(BOS)
+EOS_CHAR = chr(EOS)
 
 CHARS = 128
 

@@ -1,8 +1,16 @@
 """Test reading batches of character streams."""
 from six.moves import cStringIO as StringIO
-from samyro import read
+from samyro import integerize, read
 
 import numpy
+
+import re
+
+
+def repair(string):
+    string = re.sub(r'<BOS>', integerize.BOS_CHAR, string)
+    string = re.sub(r'<EOS>', integerize.EOS_CHAR, string)
+    return string
 
 
 def test_patch_batches():
@@ -18,7 +26,7 @@ def test_patch_batches():
 
     first = list(next(batches))
     assert len(first) == 2
-    assert first[0] == read.Sample(input="\x7ffo", output="foo")
+    assert first[0] == read.Sample(input=repair("<BOS>fo"), output="foo")
 
 
 def test_patch_strings():
@@ -28,7 +36,7 @@ def test_patch_strings():
 
     first = next(strings)
     assert isinstance(first, read.Sample)
-    assert read.Sample(input="\x7ffo", output="foo") == first
+    assert read.Sample(input=repair("<BOS>fo"), output="foo") == first
 
     second = next(strings)
     assert isinstance(second, read.Sample)
@@ -36,7 +44,8 @@ def test_patch_strings():
 
     third = next(strings)
     assert isinstance(third, read.Sample)
-    assert read.Sample(input="r\n\x01", output="\n\x01\x01") == third
+    assert read.Sample(input=repair("r\n<EOS>"),
+                       output=repair("\n<EOS><EOS>")) == third
 
     # assert raises EndOfInput thereafter?
 
@@ -48,15 +57,16 @@ def test_lines_strings():
 
     first = next(strings)
     assert isinstance(first, read.Sample)
-    assert read.Sample(input="\x7ffooba", output="foobar") == first
+    assert read.Sample(input=repair("<BOS>fooba"), output="foobar") == first
 
     second = next(strings)
     assert isinstance(second, read.Sample)
-    assert read.Sample(input="\x7fbaz\n\x01", output="baz\n\x01\x01") == second
+    assert read.Sample(input=repair("<BOS>baz\n<EOS>"),
+                       output=repair("baz\n<EOS><EOS>")) == second
 
     third = next(strings)
     assert isinstance(third, read.Sample)
-    assert read.Sample(input="\x7fwikiw", output="wikiwi") == third
+    assert read.Sample(input=repair("<BOS>wikiw"), output="wikiwi") == third
 
     # assert raises EndOfInput thereafter?
 
@@ -69,17 +79,18 @@ def test_paras_strings():
 
     first = next(strings)
     assert isinstance(first, read.Sample)
-    assert read.Sample(input="\x7ffoobar\nbaz\n\x01\x01\x01",
-                       output="foobar\nbaz\n\x01\x01\x01\x01") == first
+    assert read.Sample(
+        input=repair("<BOS>foobar\nbaz\n<EOS><EOS><EOS>"),
+        output=repair("foobar\nbaz\n<EOS><EOS><EOS><EOS>")) == first
 
     second = next(strings)
     assert isinstance(second, read.Sample)
-    assert read.Sample(input="\x7fwikiwiki\nyap\n\x01",
-                       output="wikiwiki\nyap\n\x01\x01") == second
+    assert read.Sample(input=repair("<BOS>wikiwiki\nyap\n<EOS>"),
+                       output=repair("wikiwiki\nyap\n<EOS><EOS>")) == second
 
     third = next(strings)
     assert isinstance(third, read.Sample)
-    assert read.Sample(input="\x7fwooo" + "\x01" * 10,
-                       output="wooo" + "\x01" * 11) == third
+    assert read.Sample(input=repair("<BOS>wooo" + "<EOS>" * 10),
+                       output=repair("wooo" + "<EOS>" * 11)) == third
 
     # assert raises EndOfInput thereafter?
