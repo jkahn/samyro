@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import argparse
 # import tensorflow as tf
 
@@ -33,7 +35,7 @@ def execute(args):
     """Actual execution of the sampler."""
     sampler = samyro.cli.shared.get_sampler(args)
 
-    print "args: ", args
+    print("args: ", args)
 
     if args.format == 'text':
         stream = sampler.batches(shuffle=args.shuffle, to_numpy=False)
@@ -43,9 +45,9 @@ def execute(args):
         assert False, "whoa nelly"
 
     for b_i, b in enumerate(itertools.islice(stream, args.batches)):
-        print "# batch %s" % b_i
+        print("# batch %s" % b_i)
         for i in b:
-            print i
+            print(i)
 
 
 def main():

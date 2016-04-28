@@ -1,8 +1,11 @@
+from __future__ import print_function
 import argparse
 
 import tensorflow as tf
 
 from samyro.cli import positive_int, positive_float
+
+from six.moves import xrange
 
 import samyro.cli.shared
 import samyro.read

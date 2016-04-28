@@ -5,12 +5,13 @@ from __future__ import print_function
 
 import codecs
 import collections
-import itertools
 import random
 
 import numpy
 
 import tensorflow as tf
+
+from six.moves import zip_longest
 
 # TODO(jkahn): remove dependency
 from prettytensor.tutorial import data_utils
@@ -86,8 +87,8 @@ class Sampler(object):
         if shuffle:
             seqs = list(seqs)
             random.shuffle(seqs)
-        batches = itertools.izip_longest(fillvalue=self.dummy_sequence,
-                                         *([iter(seqs)] * self.batch_size))
+        batches = zip_longest(fillvalue=self.dummy_sequence,
+                              *([iter(seqs)] * self.batch_size))
         if to_numpy:
             return (Sample.to_numpy_batch(b) for b in batches)
         else:
@@ -191,7 +192,7 @@ class CharacterPatchSampler(FileSampler):
     def string_samples(self):
         char_iter = self.characters
         prev = integerize.BOS_CHAR
-        for b in itertools.izip_longest(
+        for b in zip_longest(
                 fillvalue=integerize.EOS_CHAR,
                 *([iter(char_iter)] * self.sample_length)):
             yield Sample(input=prev + ''.join(b[:-1]),

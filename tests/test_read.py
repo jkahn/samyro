@@ -1,7 +1,6 @@
 """Test reading batches of character streams."""
+from six.moves import cStringIO as StringIO
 from samyro import read
-
-from cStringIO import StringIO
 
 import numpy
 
@@ -11,13 +10,13 @@ def test_patch_batches():
                                     sample_length=3, batch_size=2)
     batches = rr.batches(shuffle=False)
 
-    first = batches.next()
+    first = next(batches)
     assert isinstance(first, read.Sample)
     assert isinstance(first.input, numpy.ndarray)
 
     batches = rr.batches(shuffle=False, to_numpy=False)
 
-    first = list(batches.next())
+    first = list(next(batches))
     assert len(first) == 2
     assert first[0] == read.Sample(input="\x7ffo", output="foo")
 
@@ -27,15 +26,15 @@ def test_patch_strings():
                                     sample_length=3, batch_size=2)
     strings = rr.string_samples()
 
-    first = strings.next()
+    first = next(strings)
     assert isinstance(first, read.Sample)
     assert read.Sample(input="\x7ffo", output="foo") == first
 
-    second = strings.next()
+    second = next(strings)
     assert isinstance(second, read.Sample)
     assert read.Sample(input="oba", output="bar") == second
 
-    third = strings.next()
+    third = next(strings)
     assert isinstance(third, read.Sample)
     assert read.Sample(input="r\n\x01", output="\n\x01\x01") == third
 
@@ -47,15 +46,15 @@ def test_lines_strings():
                           sample_length=6, batch_size=2)
     strings = rr.string_samples()
 
-    first = strings.next()
+    first = next(strings)
     assert isinstance(first, read.Sample)
     assert read.Sample(input="\x7ffooba", output="foobar") == first
 
-    second = strings.next()
+    second = next(strings)
     assert isinstance(second, read.Sample)
     assert read.Sample(input="\x7fbaz\n\x01", output="baz\n\x01\x01") == second
 
-    third = strings.next()
+    third = next(strings)
     assert isinstance(third, read.Sample)
     assert read.Sample(input="\x7fwikiw", output="wikiwi") == third
 
@@ -68,17 +67,17 @@ def test_paras_strings():
         sample_length=15, batch_size=2)
     strings = rr.string_samples()
 
-    first = strings.next()
+    first = next(strings)
     assert isinstance(first, read.Sample)
     assert read.Sample(input="\x7ffoobar\nbaz\n\x01\x01\x01",
                        output="foobar\nbaz\n\x01\x01\x01\x01") == first
 
-    second = strings.next()
+    second = next(strings)
     assert isinstance(second, read.Sample)
     assert read.Sample(input="\x7fwikiwiki\nyap\n\x01",
                        output="wikiwiki\nyap\n\x01\x01") == second
 
-    third = strings.next()
+    third = next(strings)
     assert isinstance(third, read.Sample)
     assert read.Sample(input="\x7fwooo" + "\x01" * 10,
                        output="wooo" + "\x01" * 11) == third
