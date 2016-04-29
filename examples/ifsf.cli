@@ -1,0 +1,11 @@
+--name=ifsf
+--checkpoint_pattern=checkpoints/ifsf/checkpoint
+--epochs=40
+--batches_per_epoch=300
+--print_every=50
+--embedding_size=16
+--lstm_dims=128,256
+--sample_length=128
+--sampler=patches
+--sample_temperature=0.5
+/opt/data/texts/if/*_raw.txt
