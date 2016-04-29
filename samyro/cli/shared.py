@@ -95,7 +95,7 @@ def get_sampler(args):
         assert False, "unrecognized --sampler %s" % args.sampler
 
     return sampler_class(
-        filename=args.file.name,
+        filenames=args.files,
         sample_length=args.steps_per_sample,
         batch_size=args.batch_size)
 

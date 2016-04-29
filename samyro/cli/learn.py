@@ -96,9 +96,10 @@ def set_learner_args(learner_parser):
 
     # Positional argument for text file to read.
     learner_parser.add_argument(
-        'file', help="text file", type=argparse.FileType('r'),
-        nargs="?",
-        default='/opt/data/texts/shakespeare_input.txt')
+        'files', metavar="FILEGLOB",
+        help="text file (globs) to read", type=str,
+        nargs="*",
+        default=['/opt/data/texts/shakespeare_input.txt'])
 
     learner_parser.set_defaults(execute=execute)
 

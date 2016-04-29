@@ -14,7 +14,7 @@ def repair(string):
 
 
 def test_patch_batches():
-    rr = read.CharacterPatchSampler(filehandle=StringIO(u'foobar\n'),
+    rr = read.CharacterPatchSampler(filehandles=[StringIO(u'foobar\n')],
                                     sample_length=3, batch_size=2)
     batches = rr.batches(shuffle=False)
 
@@ -30,7 +30,7 @@ def test_patch_batches():
 
 
 def test_patch_strings():
-    rr = read.CharacterPatchSampler(filehandle=StringIO(u'foobar\n'),
+    rr = read.CharacterPatchSampler(filehandles=[StringIO(u'foobar\n')],
                                     sample_length=3, batch_size=2)
     strings = rr.string_samples()
 
@@ -51,7 +51,7 @@ def test_patch_strings():
 
 
 def test_lines_strings():
-    rr = read.LineSampler(filehandle=StringIO(u'foobar\nbaz\nwikiwiki\n'),
+    rr = read.LineSampler(filehandles=[StringIO(u'foobar\nbaz\nwikiwiki\n')],
                           sample_length=6, batch_size=2)
     strings = rr.string_samples()
 
@@ -73,7 +73,7 @@ def test_lines_strings():
 
 def test_paras_strings():
     rr = read.ParagraphSampler(
-        filehandle=StringIO(u'foobar\nbaz\n\n\nwikiwiki\nyap\n\nwooo'),
+        filehandles=[StringIO(u'foobar\nbaz\n\n\nwikiwiki\nyap\n\nwooo')],
         sample_length=15, batch_size=2)
     strings = rr.string_samples()
 

@@ -5,6 +5,8 @@ from __future__ import print_function
 
 import codecs
 import collections
+import glob
+import itertools
 import random
 
 import numpy
@@ -112,12 +114,25 @@ class FileSampler(Sampler):
     """File(handle) sampler base class."""
     def __init__(self, sample_length, batch_size,
                  encoding='utf-8',
-                 filename=None, filehandle=None):
-        assert filename is not None or filehandle is not None
-        assert not all([filename, filehandle])
-        if not filehandle:
-            filehandle = codecs.open(filename, 'rb', encoding)
-        self.filehandle = filehandle
+                 filenames=(), filehandles=()):
+        """
+        Provide one of filenames or filehandles.
+
+        Any of 'filenames' may be a glob.
+        """
+        assert any([filenames, filehandles])
+        assert not all([filenames, filehandles])
+        if not filehandles:
+            assert filenames, "must provide 1+ globs"
+            filelist = itertools.chain.from_iterable(
+                glob.glob(f) for f in filenames)
+
+            filehandles = [codecs.open(name, 'rb', encoding)
+                           for name in filelist]
+            assert len(filehandles)
+            self.filehandles = filehandles
+        else:
+            self.filehandles = filehandles
         super(FileSampler, self).__init__(
             sample_length=sample_length, batch_size=batch_size,
             dummy_value=integerize.EOS_CHAR)
@@ -125,8 +140,11 @@ class FileSampler(Sampler):
     @property
     def characters(self):
         """Returns iterable of characters."""
-        self.filehandle.seek(0)
-        return self.filehandle.read()
+        def _filehandles():
+            for f in self.filehandles:
+                f.seek(0)
+                yield f.read()
+        return itertools.chain.from_iterable(_filehandles())
 
     @property
     def lines(self):
@@ -134,8 +152,11 @@ class FileSampler(Sampler):
 
         Default implementation uses file's linebreaks.
         """
-        self.filehandle.seek(0)
-        return self.filehandle
+        def _lines():
+            for f in self.filehandles:
+                f.seek(0)
+                yield f.readlines()
+        return itertools.chain.from_iterable(_lines())
 
     # TODO(jkahn): make paragraph_sep into a regex
     def paragraphs(self, paragraph_sep=""):
@@ -144,7 +165,6 @@ class FileSampler(Sampler):
         File is thereby separated by empty lines.
         """
 
-        self.filehandle.seek(0)
         current = []
         for line in self.lines:
             if line.strip() == paragraph_sep:

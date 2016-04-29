@@ -26,9 +26,11 @@ def set_sampler_args(parser):
 
     # Positional argument for text file to read.
     parser.add_argument(
-        'file', help="text file", type=argparse.FileType('r'),
-        nargs="?",
-        default='/opt/data/texts/shakespeare_input.txt')
+        'files', metavar="FILEGLOB", help="text files to sample", type=str,
+        nargs="*",
+        default=['/opt/data/texts/shakespeare_input.txt'])
+
+    parser.set_defaults(execute=execute)
 
 
 def execute(args):
