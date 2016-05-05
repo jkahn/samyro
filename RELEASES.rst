@@ -1,6 +1,13 @@
 Release notes
 =============
 
+v0.0.4 - 5 May 2016
+-------------------
+Supports multiple-file input to sampler (and learner).
+
+(Now 'samyro learn [options] file1 file2 fileglob' works.)
+
+
 v0.0.3 - 28 April 2016
 ----------------------
 
