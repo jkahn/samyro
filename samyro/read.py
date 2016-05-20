@@ -1,4 +1,4 @@
-"""Tzara functions for loading up training batches from input text."""
+"""Samyro functions for loading up training batches from input text."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
