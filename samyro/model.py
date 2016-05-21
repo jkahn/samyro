@@ -8,8 +8,6 @@ from samyro import integerize
 import prettytensor as pt
 import tensorflow as tf
 
-from prettytensor.tutorial import data_utils
-
 
 class Model(object):
     """A model shape.
@@ -35,7 +33,7 @@ class Model(object):
 
         """
         timesteps = input_placeholder.get_shape()[1].value
-        text_in = data_utils.reshape_data(input_placeholder)
+        text_in = integerize.reshape_cleavable(input_placeholder)
         with pt.defaults_scope(activation_fn=tf.nn.relu, l2loss=0.00001):
             # The embedding lookup must be placed on a cpu.
             with tf.device('/cpu:0'):

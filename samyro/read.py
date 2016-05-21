@@ -15,9 +15,6 @@ import tensorflow as tf
 
 from six.moves import zip_longest
 
-# TODO(jkahn): remove dependency
-from prettytensor.tutorial import data_utils
-
 from samyro import integerize
 
 
@@ -59,7 +56,7 @@ class Sample(collections.namedtuple('Sample', ['input', 'output'])):
         raise NotImplementedError("implement aligned output")
 
 
-# TODO(jkahn): make this an ABC?
+# TODO(jkahn): make this a properly annotated ABC?
 class Sampler(object):
     """An ABC for any sampler."""
     def __init__(self, sample_length, batch_size,
@@ -104,7 +101,7 @@ class Sampler(object):
         _t = tf.concat(1,
                        [tf.constant(numpy.arange(tokens_per_batch).reshape(
                            (tokens_per_batch, 1)), dtype=tf.int32),
-                        data_utils.reshape_data(output_placeholder)])
+                        integerize.reshape_cleavable(output_placeholder)])
         return tf.sparse_to_dense(_t, [tokens_per_batch,
                                        integerize.CHARS],
                                   1.0, 0.0)
