@@ -1,5 +1,11 @@
 Release notes
 =============
+v0.0.5 - 7 June 2016
+--------------------
+Removed dependency on methods from prettytensor tutorial's data-management.
+
+Cleaned up references to former name "tzara"; now "samyro" throughout.
+
 
 v0.0.4 - 5 May 2016
 -------------------
