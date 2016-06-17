@@ -3,11 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
 import random
 
 import prettytensor
 import tensorflow
+from six.moves import xrange
 
 UNK = 0
 BOS = 2  # officially STX "START TEXT"
