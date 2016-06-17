@@ -110,6 +110,8 @@ def main():
     # Main argument parsers.
     parser = argparse.ArgumentParser(prog='samyro', fromfile_prefix_chars='@')
 
+    parser.set_defaults(execute=lambda args: parser.print_help())
+
     subparsers = parser.add_subparsers(help="samyro subcommands",
                                        dest="subcommand_name")
 
