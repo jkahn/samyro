@@ -1,4 +1,5 @@
 import argparse
+import os
 
 import prettytensor as pt
 
@@ -57,9 +58,10 @@ def set_shared_args():
     checkpoint_group.add_argument(
         '--checkpoint_pattern',
         metavar="FILE_PREFIX",
-        help="where to find checkpoints",
+        help=("Name for checkpoint files, including file prefix. "
+              "Defaults to cwd + 'checkpoint'"),
         type=str,
-        default='/home/jeremy/notebooks/shakespeare/shakespeare')
+        default=os.path.join(os.getcwd(), 'checkpoint'))
 
     return shared_parent
 
