@@ -104,8 +104,8 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['six',
-                      'tensorflow>=0.7.1',
-                      'prettytensor>=0.5.3',
+                      'tensorflow>=0.9.0rc0',
+                      'prettytensor>=0.6.2',
     ],
 
     # List additional groups of dependencies here (e.g. development
