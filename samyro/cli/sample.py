@@ -58,10 +58,14 @@ def main():
     # shared_parent = samyro.cli.shared.set_shared_args()
 
     parser = argparse.ArgumentParser(prog='samyro-sample',
-                                     fromfile_prefix_chars='@',)
+                                     fromfile_prefix_chars='@', )
 
     set_sampler_args(parser)
 
     args = parser.parse_args()
 
     execute(args)
+
+
+if __name__ == "__main__":
+    main()

@@ -3,15 +3,13 @@ import os
 
 import prettytensor as pt
 
+import samyro.cli.learn
+import samyro.cli.sample
+import samyro.cli.write
 import samyro.learn
 import samyro.model
 import samyro.read
 import samyro.write
-
-import samyro.cli.learn
-import samyro.cli.write
-import samyro.cli.sample
-
 from samyro.cli import positive_int
 
 
@@ -134,3 +132,7 @@ def main():
     args = parser.parse_args()
 
     args.execute(args)
+
+
+if __name__ == "__main__":
+    main()
