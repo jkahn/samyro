@@ -1,11 +1,12 @@
 from __future__ import print_function
 
 import argparse
+
 import tensorflow as tf
 
-from samyro.cli import positive_int, positive_float
 import samyro.cli.shared
 import samyro.integerize
+from samyro.cli import positive_int, positive_float
 
 
 def execute(args):
@@ -53,3 +54,7 @@ def main():
     args = parser.parse_args()
 
     execute(args)
+
+
+if __name__ == "__main__":
+    main()
